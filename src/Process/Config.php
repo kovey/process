@@ -14,6 +14,7 @@ namespace Kovey\Process\Process;
 use Kovey\Library\Config\Manager;
 use Kovey\Logger\Logger;
 use Swoole\Timer;
+use Kovey\Process\ProcessAbstract;
 
 class Config extends ProcessAbstract
 {

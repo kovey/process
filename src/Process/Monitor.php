@@ -16,6 +16,7 @@ use Kovey\Rpc\Client\Client;
 use Kovey\Logger\Logger;
 use Kovey\Library\Util\Json;
 use Swoole\Timer;
+use Kovey\Process\ProcessAbstract;
 
 class Monitor extends ProcessAbstract
 {
