@@ -1,0 +1,33 @@
+{
+    "name": "kovey/process",
+    "type": "library",
+    "description": "Process Of The Kovey Framework",
+    "keywords": [
+        "framework",
+        "kovey",
+        "process",
+        "php"
+    ],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Kovey",
+            "email": "kovey@vip.qq.com",
+            "role": "developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "ext-swoole": "^4.6.0",
+        "kovey/library": "^2.1",
+        "kovey/rpc-client": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kovey\\Process\\": "src/"
+        }
+    }
+}
