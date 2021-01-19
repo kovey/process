@@ -1,9 +1,9 @@
 <?php
 /**
  *
- * @description 系统监控进程
+ * @description monitor process
  *
- * @package     Kovey\Components\Process
+ * @package     Process
  *
  * @time        2020-01-19 14:52:47
  *
@@ -21,21 +21,21 @@ use Kovey\Process\ProcessAbstract;
 class Monitor extends ProcessAbstract
 {
     /**
-     * @description 初始化
+     * @description init
      *
-     * @return null
+     * @return void
      */
-    protected function init()
+    protected function init() : void
     {
         $this->processName = 'kovey framework cluster monitor';
     }
 
     /**
-     * @description 业务处理
+     * @description business process
      *
-     * @return null
+     * @return void
      */
-    protected function busi()
+    protected function busi() : void
     {
         $this->listen(function ($pipe) {
             $logger = $this->read();
@@ -54,15 +54,15 @@ class Monitor extends ProcessAbstract
     }
 
     /**
-     * @description 发送数据到监控系统
+     * @description send data to monitor system
      *
      * @param string $method
      *
      * @param ...mixed $args
      *
-     * @return null
+     * @return void
      */
-    protected function sendToMonitor($method, ...$args)
+    protected function sendToMonitor(string $method, ...$args) : void
     {
         go(function ($method, $args) {
             $cli = new Client(Manager::get('rpc.monitor'));

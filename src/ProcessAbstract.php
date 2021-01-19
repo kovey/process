@@ -1,9 +1,9 @@
 <?php
 /**
  *
- * @description 用户自定义进程基类
+ * @description user custom process
  *
- * @package     Components\Process
+ * @package     Process
  *
  * @time        Tue Sep 24 09:09:20 2019
  *
@@ -17,49 +17,49 @@ use Swoole\Event;
 abstract class ProcessAbstract
 {
     /**
-     * @description 进程
+     * @description process
      *
      * @var Swoole\Process
      */
     protected \Swoole\Process $process;
 
     /**
-     * @description 回调
+     * @description callback
      *
-     * @var callable
+     * @var callable | Array
      */
-    protected $callBack;
+    protected mixed $callBack;
 
     /**
-     * @description 服务器对象
+     * @description server
      *
      * @var Swoole\Server
      */
     protected \Swoole\Server $server;
 
     /**
-     * @description woker进程数
+     * @description woker count
      *
      * @var Swoole\Atomic
      */
     protected \Swoole\Atomic $workerAtomic;
 
     /**
-     * @description 进程名称
+     * @description process name
      *
      * @var string
      */
     protected string $processName;
 
     /**
-     * @description 进程
+     * @description woker number
      *
      * @var int
      */
     protected int $workNum = 0;
 
     /**
-     * @description 构造函数
+     * @description constructor
      */
     final public function __construct()
     {
@@ -68,7 +68,7 @@ abstract class ProcessAbstract
     }
 
     /**
-     * @description 设置服务器对象
+     * @description set server
      *
      * @param Swoole\Server $server
      *
@@ -83,7 +83,7 @@ abstract class ProcessAbstract
     }
 
     /**
-     * @description 设置
+     * @description set worker count
      *
      * @param Swoole\Atomic $workerAtomic
      *
@@ -96,25 +96,25 @@ abstract class ProcessAbstract
     }
 
     /**
-     * @description 向进程管道写入数据
+     * @description write data into pipe
      *
      * @param mixed $data
      *
      * @return bool
      */
-    public function push($data) : bool
+    public function push(mixed $data) : bool
     {
         return $this->process->write(serialize($data));
     }
 
     /**
-     * @description 回调处理
+     * @description callBack
      *
      * @param mixed $worker
      *
-     * @return null
+     * @return void
      */
-    public function callBack($worker)
+    public function callBack(mixed $worker) : void
     {
         ko_change_process_name($this->processName);
 
@@ -122,7 +122,7 @@ abstract class ProcessAbstract
     }
 
     /**
-     * @description 设置进程名称
+     * @description set process name
      *
      * @param string $processName
      *
@@ -135,7 +135,7 @@ abstract class ProcessAbstract
     }
 
     /**
-     * @description 向woker进程发送数据
+     * @description send data to worker process
      *
      * @param string $path
      * 
@@ -158,7 +158,7 @@ abstract class ProcessAbstract
     }
 
     /**
-     * @description 获取workerID
+     * @description get worker id
      *
      * @return int
      */
@@ -175,13 +175,13 @@ abstract class ProcessAbstract
     }
 
     /**
-     * @description 监听管道
+     * @description listen pipe event
      *
-     * @param callable $callback
+     * @param callable | array $callback
      *
      * @return ProcessAbstract
      */
-    protected function listen(callable $callback) : ProcessAbstract
+    protected function listen(callable | Array $callback) : ProcessAbstract
     {
         Event::add($this->process->pipe, $callback);
         return $this;
@@ -192,22 +192,22 @@ abstract class ProcessAbstract
      *
      * @return mixed
      */
-    public function read()
+    public function read() : mixed
     {
         return unserialize($this->process->read());
     }
 
     /**
-     * @description 初始化
+     * @description init
      *
-     * @return null
+     * @return void
      */
-    abstract protected function init();
+    abstract protected function init() : void;
 
     /**
-     * @description 业务处理
+     * @description business process
      *
-     * @return null
+     * @return void
      */
-    abstract protected function busi();
+    abstract protected function busi() : void;
 }

@@ -1,9 +1,9 @@
 <?php
 /**
  *
- * @description 配置文件检测进程
+ * @description config parse
  *
- * @package     Components\Process
+ * @package     Process
  *
  * @time        Tue Sep 24 09:07:51 2019
  *
@@ -19,21 +19,21 @@ use Kovey\Process\ProcessAbstract;
 class Config extends ProcessAbstract
 {
     /**
-     * @description 初始化
+     * @description init
      *
-     * @return null
+     * @return void
      */
-    protected function init()
+    protected function init() : void
     {
         $this->processName = 'kovey framework config';
     }
 
     /**
-     * @description 业务逻辑处理
+     * @description business process
      *
-     * @return null
+     * @return void
      */
-    protected function busi()
+    protected function busi() : void
     {
         $this->listen(function ($pipe) {
             $logger = $this->read();
