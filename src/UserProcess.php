@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @description 自定义进程管理,托管到swoole的process manager
+ * @description user process manager
  *
  * @package     Server
  *
@@ -14,14 +14,14 @@ namespace Kovey\Process;
 class UserProcess
 {
     /**
-     * @description 所有的自定义进程
+     * @description all custom process
      *
      * @var Array
      */
     private Array $procs;
 
     /**
-     * @description 构造函数
+     * @description constructor
      *
      * @param int $workerNum;
      */
@@ -32,22 +32,23 @@ class UserProcess
     }
 
     /**
-     * @description 添加用户自定的进程
+     * @description add process
      *
      * @param string $name
      *
      * @param ProcessAbstract $process
      *
-     * @return null
+     * @return UserProcess
      */
-    public function addProcess(string $name, ProcessAbstract $process)
+    public function addProcess(string $name, ProcessAbstract $process) : UserProcess
     {
         $process->setWorkerAtomic($this->workerAtomic);
         $this->procs[$name] = $process;
+        return $this;
     }
 
     /**
-     * @description 向指定的进程管道写入数据
+     * @description write data into process pipe
      *
      * @param string $name
      *
@@ -55,7 +56,7 @@ class UserProcess
      *
      * @return bool
      */
-    public function push(string $name, $data) : bool
+    public function push(string $name, mixed $data) : bool
     {
         if (!isset($this->procs[$name])) {
             return false;

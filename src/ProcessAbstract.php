@@ -188,7 +188,7 @@ abstract class ProcessAbstract
     }
 
     /**
-     * @description 从管道中读取数据
+     * @description read data from pipe
      *
      * @return mixed
      */
