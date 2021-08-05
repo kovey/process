@@ -51,6 +51,38 @@ class Monitor extends ProcessAbstract
             $this->sendToMonitor('load', $result, Manager::get('server.server.name'), Manager::get('server.server.project'));
             Logger::writeInfoLog(__LINE__, __FILE__, 'sys load average: ' . Json::encode($result));
         });
+
+        Timer::after(5000, function () {
+            try {
+                $dir = APPLICATION_PATH . '/application/controllers';
+                $namespace = '';
+                $suffix = 'Controller';
+                if (!is_dir($dir)) {
+                    $dir = APPLICATION_PATH . '/application/Handler';
+                    if (!is_dir($dir)) {
+                        return;
+                    }
+                    $namespace = 'Handler';
+                    $suffix = '';
+                }
+
+                $apis = array();
+                foreach (scandir($dir) as $file) {
+                    if (substr($file, -4) !== '.php') {
+                        continue;
+                    }
+
+                    $class = trim($namespace . '\\' . substr($file, 0, -4) . $suffix, '\\');
+                    $ref = new \ReflectionMethod($class);
+                    foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                        $apis[] = $ref->getName() . '::' . $method->getName();
+                    }
+                }
+
+                $this->sendToMonitor('apis', Manager::get('server.server.name'), Manager::get('server.server.project'), $apis);
+            } catch (\Throwable $e) {
+            }
+        });
     }
 
     /**
