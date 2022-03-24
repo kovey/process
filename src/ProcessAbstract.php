@@ -199,6 +199,34 @@ abstract class ProcessAbstract
     }
 
     /**
+     * @description send data to all worker process
+     *
+     * @param string $path
+     * 
+     * @param string $method
+     *
+     * @param Array $args
+     *
+     * @param string $traceId
+     *
+     * @return bool
+     */
+    protected function sendAll(string $path, string $method, Array $params = array(), string $traceId = '', string $spanId = '') : bool
+    {
+        for ($id = 0; $id < $this->workNum; $i ++) {
+            $this->server->sendMessage(array(
+                'p' => $path,
+                'm' => $method,
+                'a' => $params,
+                't' => $traceId,
+                's' => $spanId
+            ), $id);
+        }
+
+        return true;
+    }
+
+    /**
      * @description init
      *
      * @return void
