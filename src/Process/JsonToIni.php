@@ -52,14 +52,14 @@ class JsonToIni extends ProcessAbstract
 
     protected function jsonToIni() : void
     {
-        if (is_dir($this->path)) {
+        if (!is_dir($this->path)) {
             return;
         }
 
         $files = scandir($this->path);
         foreach ($files as $file) {
-            $suffix = substr($file, -6);
-            if ($suffix === false || strtolower($suffix) !== 'json') {
+            $suffix = substr($file, -9);
+            if ($suffix === false || strtolower($suffix) !== '.ini.json') {
                 continue;
             }
 
@@ -70,9 +70,18 @@ class JsonToIni extends ProcessAbstract
             }
 
             try {
+                $result = array();
                 $config = Json::decode($content);
-                $content = $this->toIni($config);
-                file_put_contents(str_replace('.json', '.ini', $filePath), $content);
+                foreach ($config as $area => $conf) {
+                    if (!is_array($conf)) {
+                        continue;
+                    }
+
+                    $result[] = "[" . $area . "]\n";
+                    $result[] = $this->toIni($conf);
+                }
+
+                file_put_contents(str_replace('.ini.json', '.ini', $filePath), implode("", $result));
             } catch (\Throwable $e) {
             }
         }
