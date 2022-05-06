@@ -213,7 +213,7 @@ abstract class ProcessAbstract
      */
     protected function sendAll(string $path, string $method, Array $params = array(), string $traceId = '', string $spanId = '') : bool
     {
-        for ($id = 0; $id < $this->workNum; $i ++) {
+        for ($id = 0; $id < $this->workNum; $id ++) {
             $this->server->sendMessage(array(
                 'p' => $path,
                 'm' => $method,
