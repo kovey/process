@@ -60,7 +60,7 @@ class CleanLog extends ProcessAbstract
 
             $file = $dir . '/' . $file;
             if (is_dir($file)) {
-                self::delDir($dir);
+                self::delDir($file);
                 continue;
             }
 
